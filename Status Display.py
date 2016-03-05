@@ -1,74 +1,5 @@
-import pygame
-import pygame.gfxdraw
+from functions import *
 import sys
-import time
-
-x_size = 480
-y_size = 320
-
-radius = 50
-space = 18
-
-colorGreen = (169, 204, 80)
-colorRed = (214,51,87)
-colorBlack = (0,0,0)
-colorBackground = (180,180,180)
-colorYellow = (245,245,73)
-
-circley = y_size - (radius + 10)
-circleOnex = 1*radius + space-3
-
-circleTwox = 3*radius + 2*space-3
-
-circleThreex = 5*radius + 3*space-3
-
-circleFourx = 7*radius + 4*space-3
-
-def buttonOne(state):
-    if state is True:
-        f = pygame.font.SysFont("freesans", 32)
-        #color is green
-        pygame.gfxdraw.filled_circle(background,circleOnex,circley,radius,colorGreen)
-        #text is ON
-        circleOneText = f.render('ON',1,(5,5,5))
-        circleOneTextpos = circleOneText.get_rect()
-        circleOneTextpos.center = (circleOnex,circley)
-        background.blit(circleOneText,circleOneTextpos)
-    elif state is False:
-        f = pygame.font.SysFont("freesans", 32)
-        #color is black
-        pygame.gfxdraw.filled_circle(background,circleOnex,circley,radius,colorBlack)
-        #text is OFF
-        circleOneText = f.render('OFF',1,colorBackground)
-        circleOneTextpos = circleOneText.get_rect()
-        circleOneTextpos.center = (circleOnex,circley)
-        background.blit(circleOneText,circleOneTextpos)
-
-def buttonTwo(state):
-    if state is True:
-        f = pygame.font.SysFont("freesans", 32)
-        #color is green
-        pygame.gfxdraw.filled_circle(background,circleTwox,circley,radius,colorGreen)
-        #text is ON
-        circleTwoText = f.render('READY',1,(5,5,5))
-        circleTwoTextpos = circleTwoText.get_rect()
-        circleTwoTextpos.center = (circleTwox,circley)
-        background.blit(circleTwoText,circleTwoTextpos)
-    elif state is False:
-        f = pygame.font.SysFont("freesans", 24)
-        #color is black
-        pygame.gfxdraw.filled_circle(background,circleTwox,circley,radius,colorYellow)
-        #text is OFF
-        circleTwoText = f.render('RUNNING',1,colorBackground)
-        circleTwoTextpos = circleTwoText.get_rect()
-        circleTwoTextpos.center = (circleTwox,circley)
-        background.blit(circleTwoText,circleTwoTextpos)
-    #if state is True:
-        #text is 'READY'
-        #color is green
-    #elif state is False:
-        #text is 'IN PROGRESS'
-        #color is YELLOW
 
 
 
@@ -140,6 +71,9 @@ pygame.display.flip()
 while True:
     buttonOne(True)
     buttonTwo(True)
+    buttonThree(True)
+    buttonFour(True)
+
     lcd.blit(background, (0,0))
     pygame.display.flip()
 
@@ -147,6 +81,8 @@ while True:
 
     buttonOne(False)
     buttonTwo(False)
+    buttonThree(False)
+    buttonFour(False)
     lcd.blit(background, (0,0))
     pygame.display.flip()
     
@@ -157,15 +93,3 @@ while True:
 exit()
 
 
-
-
-#def buttonThree(state):
-#    if state is True:
-        #text is 'RUN'
-        #color is green
-#    elif state is False:
-        #text is 'TEST'
-        #color is YELLOW
-
-#def buttonFour(state):
-        #text is 'RESET'
