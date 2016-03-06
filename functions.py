@@ -13,6 +13,7 @@ colorRed = (224,31,73)
 colorBlack = (0,0,0)
 colorBackground = (180,180,180)
 colorYellow = (245,245,73)
+colorWhite = (250,250,250)
 
 #circles one and four locations are switched
 circley = y_size - (radius + 10)
@@ -45,6 +46,7 @@ def buttonOne(state):
 
     f = pygame.font.SysFont("freesans", textsize)
     pygame.gfxdraw.filled_circle(background,circleOnex,circley,radius,color)
+    pygame.gfxdraw.aacircle(background,circleOnex,circley,radius,color)
     circleOneText = f.render(text,1,textcolor)
     circleOneTextpos = circleOneText.get_rect()
     circleOneTextpos.center = (circleOnex,circley)
@@ -65,6 +67,8 @@ def buttonTwo(state):
 
     f = pygame.font.SysFont("freesans", textsize)
     pygame.gfxdraw.filled_circle(background,circleTwox,circley,radius,color)
+    pygame.gfxdraw.aacircle(background,circleTwox,circley,radius,color)
+
     circleTwoText = f.render(text,1,textcolor)
     circleTwoTextpos = circleTwoText.get_rect()
     circleTwoTextpos.center = (circleTwox,circley)
@@ -85,6 +89,7 @@ def buttonThree(state):
 
     f = pygame.font.SysFont("freesans", textsize)
     pygame.gfxdraw.filled_circle(background,circleThreex,circley,radius,color)
+    pygame.gfxdraw.aacircle(background,circleThreex,circley,radius,color)
     circleThreeText = f.render(text,1,textcolor)
     circleThreeTextpos = circleThreeText.get_rect()
     circleThreeTextpos.center = (circleThreex,circley)
@@ -105,6 +110,7 @@ def buttonFour(state):
     f = pygame.font.SysFont("freesans", textsize)
     #text is 'RESET'
     pygame.gfxdraw.filled_circle(background, circleFourx, circley, radius, color)
+    pygame.gfxdraw.aacircle(background, circleFourx, circley, radius, color)
     circleFourText = f.render(text, 1, textcolor)
     circleFourTextpos = circleFourText.get_rect()
     circleFourTextpos.center = (circleFourx, circley)
@@ -117,9 +123,8 @@ def drawSensor(location,state):
         color = colorGreen
     elif not state:
         color = colorBackground
-
     pygame.gfxdraw.filled_circle(background,x[location],105,10,color)
-
+    pygame.gfxdraw.aacircle(background,x[location],105,10,color)
 
 def drawarrow(location, state):
     if location == 1:
@@ -158,6 +163,23 @@ def insidecircle(x,y):
     else:
         return False
 
+
+def drawlaunchwheel(state):
+    if state:
+        #toplaunchwheel
+        pygame.gfxdraw.filled_circle(background,410,105-31,30,colorGreen)
+        pygame.gfxdraw.aacircle(background,410,105-31,30,colorGreen)
+        #bottomlaunchwheel
+        pygame.gfxdraw.filled_circle(background,410,105+31,30,colorGreen)
+        pygame.gfxdraw.aacircle(background,410,105+31,30,colorGreen)
+
+    elif not state:
+        #toplaunchwheel
+        pygame.gfxdraw.filled_circle(background,410,105-31,30,colorWhite)
+        pygame.gfxdraw.aacircle(background,410,105-31,30,colorWhite)
+        #bottomlaunchwheel
+        pygame.gfxdraw.filled_circle(background,410,105+31,30,colorWhite)
+        pygame.gfxdraw.aacircle(background,410,105+31,30,colorWhite)
 
 def drawLaunchUI():
 

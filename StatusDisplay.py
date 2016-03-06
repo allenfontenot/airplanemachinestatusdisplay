@@ -17,16 +17,11 @@ pygame.init()
 
 drawLaunchUI()
 
-#toplaunchwheel
-pygame.gfxdraw.filled_circle(background,410,105-31,30,(250,250,250))
-
-#bottomlaunchwheel
-pygame.gfxdraw.filled_circle(background,410,105+31,30,(250,250,250))
+drawlaunchwheel(wheelstate)
+buttonOne(False)
 
 lcd.blit(background, (0,0))
 pygame.display.flip()
-
-buttonOne(False)
 
 while True:
 
