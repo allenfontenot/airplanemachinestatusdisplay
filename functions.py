@@ -9,94 +9,168 @@ radius = 50
 space = 18
 
 colorGreen = (169, 204, 80)
-colorRed = (214,51,87)
+colorRed = (224,31,73)
 colorBlack = (0,0,0)
 colorBackground = (180,180,180)
 colorYellow = (245,245,73)
 
+#circles one and four locations are switched
 circley = y_size - (radius + 10)
-circleOnex = 1*radius + space-3
+circleFourx = 1*radius + space-3
 
 circleTwox = 3*radius + 2*space-3
 
 circleThreex = 5*radius + 3*space-3
 
-circleFourx = 7*radius + 4*space-3
+circleOnex = 7*radius + 4*space-3
+
+
+lcd = pygame.display.set_mode((480, 320))
+background = pygame.Surface(lcd.get_size())
+background = background.convert()
+
 
 def buttonOne(state):
-    if state is True:
-        f = pygame.font.SysFont("freesans", 32)
-        #color is green
-        pygame.gfxdraw.filled_circle(background,circleOnex,circley,radius,colorGreen)
-        #text is ON
-        circleOneText = f.render('ON',1,(5,5,5))
-        circleOneTextpos = circleOneText.get_rect()
-        circleOneTextpos.center = (circleOnex,circley)
-        background.blit(circleOneText,circleOneTextpos)
-    elif state is False:
-        f = pygame.font.SysFont("freesans", 32)
-        #color is black
-        pygame.gfxdraw.filled_circle(background,circleOnex,circley,radius,colorBlack)
-        #text is OFF
-        circleOneText = f.render('OFF',1,colorBackground)
-        circleOneTextpos = circleOneText.get_rect()
-        circleOneTextpos.center = (circleOnex,circley)
-        background.blit(circleOneText,circleOneTextpos)
+    global speed
+    if not state:
+        speed = 100
+    elif state:
+        speed -= 5
+        if speed == 0:
+            speed = 100
+    color = colorBlack
+    textcolor = colorBackground
+    text = str(speed) + '%'
+    textsize = 32
+
+    f = pygame.font.SysFont("freesans", textsize)
+    pygame.gfxdraw.filled_circle(background,circleOnex,circley,radius,color)
+    circleOneText = f.render(text,1,textcolor)
+    circleOneTextpos = circleOneText.get_rect()
+    circleOneTextpos.center = (circleOnex,circley)
+    background.blit(circleOneText,circleOneTextpos)
+
 
 def buttonTwo(state):
-    if state is True:
-        f = pygame.font.SysFont("freesans", 27)
-        #text is 'READY'
-        #color is green
-        pygame.gfxdraw.filled_circle(background,circleTwox,circley,radius,colorGreen)
-        circleTwoText = f.render('READY',1,(5,5,5))
-        circleTwoTextpos = circleTwoText.get_rect()
-        circleTwoTextpos.center = (circleTwox,circley)
-        background.blit(circleTwoText,circleTwoTextpos)
-    elif state is False:
-        f = pygame.font.SysFont("freesans", 21)
-        #text is 'IN PROGRESS'
-        #color is YELLOW
-        pygame.gfxdraw.filled_circle(background,circleTwox,circley,radius,colorYellow)
-        circleTwoText = f.render('RUNNING',1,colorBackground)
-        circleTwoTextpos = circleTwoText.get_rect()
-        circleTwoTextpos.center = (circleTwox,circley)
-        background.blit(circleTwoText,circleTwoTextpos)
+    if state:
+        color = colorGreen
+        textcolor = (5, 5, 5)
+        text = 'READY'
+        textsize = 27
+    if not state:
+        color = colorYellow
+        textcolor = colorBackground
+        text = 'RUNNING'
+        textsize = 21
+
+    f = pygame.font.SysFont("freesans", textsize)
+    pygame.gfxdraw.filled_circle(background,circleTwox,circley,radius,color)
+    circleTwoText = f.render(text,1,textcolor)
+    circleTwoTextpos = circleTwoText.get_rect()
+    circleTwoTextpos.center = (circleTwox,circley)
+    background.blit(circleTwoText,circleTwoTextpos)
+
 
 def buttonThree(state):
-    if state is True:
-        f = pygame.font.SysFont("freesans", 32)
-        #text is 'RUN'
-        #color is green
-        pygame.gfxdraw.filled_circle(background,circleThreex,circley,radius,colorGreen)
-        circleThreeText = f.render('RUN',1,(5,5,5))
-        circleThreeTextpos = circleThreeText.get_rect()
-        circleThreeTextpos.center = (circleThreex,circley)
-        background.blit(circleThreeText,circleThreeTextpos)
-    elif state is False:
-        f = pygame.font.SysFont("freesans", 32)
-        #text is 'TEST'
-        #color is YELLOW
-        pygame.gfxdraw.filled_circle(background,circleThreex,circley,radius,colorYellow)
-        circleThreeText = f.render('TEST',1,colorBackground)
-        circleThreeTextpos = circleThreeText.get_rect()
-        circleThreeTextpos.center = (circleThreex,circley)
-        background.blit(circleThreeText,circleThreeTextpos)
+    if state:
+        color = colorGreen
+        textcolor = (5, 5, 5)
+        text = 'RUN'
+        textsize = 32
+    if not state:
+        color = colorYellow
+        textcolor = colorBackground
+        text = 'TEST'
+        textsize = 32
+
+    f = pygame.font.SysFont("freesans", textsize)
+    pygame.gfxdraw.filled_circle(background,circleThreex,circley,radius,color)
+    circleThreeText = f.render(text,1,textcolor)
+    circleThreeTextpos = circleThreeText.get_rect()
+    circleThreeTextpos.center = (circleThreex,circley)
+    background.blit(circleThreeText,circleThreeTextpos)
 
 def buttonFour(state):
-    if state is True:
-        f = pygame.font.SysFont("freesans", 30)
-        #text is 'RESET'
-        pygame.gfxdraw.filled_circle(background,circleFourx,circley,radius,colorBlack)
-        circleFourText = f.render('RESET',1,colorBackground)
-        circleFourTextpos = circleFourText.get_rect()
-        circleFourTextpos.center = (circleFourx,circley)
-        background.blit(circleFourText,circleFourTextpos)
-    elif state is False:
-        f = pygame.font.SysFont("freesans", 30)
-        #text is 'RESET'
-        pygame.gfxdraw.filled_circle(background,circleFourx,circley,radius,colorBlack)
-        circleFourText = f.render('RESET',1,colorBackground)
-        circleFourTextpos = circleFourText.get_rect()
-        circleFourTextpos.center = (circleFourx,circley)
-        background.blit(circleFourText,circleFourTextpos)
+    if not state:
+        color = colorBlack
+        textcolor = colorBackground
+        text = 'RESET'
+        textsize = 29
+    if state:
+        color = colorBackground
+        textcolor = colorBlack
+        text = 'RESET'
+        textsize = 29
+
+    f = pygame.font.SysFont("freesans", textsize)
+    #text is 'RESET'
+    pygame.gfxdraw.filled_circle(background, circleFourx, circley, radius, color)
+    circleFourText = f.render(text, 1, textcolor)
+    circleFourTextpos = circleFourText.get_rect()
+    circleFourTextpos.center = (circleFourx, circley)
+    background.blit(circleFourText, circleFourTextpos)
+
+
+def drawSensor(location,state):
+    x = [75,235,285,380]
+    if state:
+        color = colorGreen
+    elif not state:
+        color = colorBackground
+
+    pygame.gfxdraw.filled_circle(background,x[location],105,10,color)
+
+
+def drawarrow(location, state):
+    if location == 1:
+        x = 125
+        y = 95
+    elif location ==2:
+        x = 305
+        y = 95
+
+    if state:
+        color = colorGreen
+    elif not state:
+        color = colorBackground
+
+    pygame.draw.polygon(background, color, ((0+x,0+y),(0+x,20+y),(40+x,20+y),(40+x,30+y),(60+x,10+y),(40+x,-10+y),(40+x,0+y)))
+
+
+def insidecircle(x,y):
+    radiussquared = radius**2
+    insidecircleone = (x-circleOnex)**2 + (y-circley)**2
+    insidecircletwo = (x-circleTwox)**2 + (y-circley)**2
+    insidecirclethree = (x-circleThreex)**2 + (y-circley)**2
+    insidecirclefour = (x-circleFourx)**2 + (y-circley)**2
+
+
+    if insidecircleone <= radiussquared:
+        print x
+        print y
+        return 1
+    elif insidecircletwo <= radiussquared:
+        return 2
+    elif insidecirclethree <= radiussquared:
+        return 3
+    elif insidecirclefour <= radiussquared:
+        return 4
+    else:
+        return False
+
+
+def drawLaunchUI():
+
+    background.fill(colorBackground)
+
+    launchSquare = pygame.Surface((50,110))
+    launchSquare.fill((127,127,127))
+    background.blit(launchSquare, (50,50))
+
+    foldSquare = pygame.Surface((150,110))
+    foldSquare.fill((127,127,127))
+    background.blit(foldSquare, (110,50))
+
+    channel = pygame.Surface((140,40))
+    channel.fill((127,127,127))
+    background.blit(channel, (270,85))

@@ -1,7 +1,6 @@
 from functions import *
 import sys
-
-
+import time
 
 def exit():
     for event in pygame.event.get():
@@ -9,26 +8,14 @@ def exit():
             pygame.quit()
             sys.exit()
 
-
+arrowstate = [False,False]
+buttonstate = [False,True,True,False]
+sensorstate = [False,False,False,False]
+wheelstate = False
 
 pygame.init()
-lcd = pygame.display.set_mode((480, 320))
-background = pygame.Surface(lcd.get_size())
-background = background.convert()
 
-background.fill(colorBackground)
-
-launchSquare = pygame.Surface((50,110))
-launchSquare.fill((127,127,127))
-background.blit(launchSquare, (50,50))
-
-foldSquare = pygame.Surface((150,110))
-foldSquare.fill((127,127,127))
-background.blit(foldSquare, (110,50))
-
-channel = pygame.Surface((140,40))
-channel.fill((127,127,127))
-background.blit(channel, (270,85))
+drawLaunchUI()
 
 #toplaunchwheel
 pygame.gfxdraw.filled_circle(background,410,105-31,30,(250,250,250))
@@ -36,60 +23,43 @@ pygame.gfxdraw.filled_circle(background,410,105-31,30,(250,250,250))
 #bottomlaunchwheel
 pygame.gfxdraw.filled_circle(background,410,105+31,30,(250,250,250))
 
-#sensor 1
-pygame.gfxdraw.filled_circle(background,75,105,10,(224,31,73))
-#sensor 2
-pygame.gfxdraw.filled_circle(background,235,105,10,(224,31,73))
-#sensor 3
-pygame.gfxdraw.filled_circle(background,285,105,10,(224,31,73))
-#sensor 4
-pygame.gfxdraw.filled_circle(background,380,105,10,(224,31,73))
-
-
-#starting point
-sx1 = 125
-sy1 = 95
-
-sx = 310
-sy = 95
-
-pygame.draw.polygon(background, (170, 224, 31), ((0+sx,0+sy),(0+sx,20+sy),(20+sx,20+sy),(20+sx,30+sy),(40+sx,10+sy),(20+sx,-10+sy),(20+sx,0+sy)))
-pygame.draw.polygon(background, (170, 224, 31), ((0+sx1,0+sy1),(0+sx1,20+sy1),(40+sx1,20+sy1),(40+sx1,30+sy1),(60+sx1,10+sy1),(40+sx1,-10+sy1),(40+sx1,0+sy1)))
-
-#buttons
-
-
-#pygame.gfxdraw.filled_circle(background,circleTwoPos,radius,(127,127,127))
-#pygame.gfxdraw.filled_circle(background,circleThreePos,radius,(127,127,127))
-#pygame.gfxdraw.filled_circle(background,circleFourPos,radius,(127,127,127))
-
-
-
 lcd.blit(background, (0,0))
 pygame.display.flip()
 
+buttonOne(False)
+
 while True:
-    buttonOne(True)
-    buttonTwo(True)
-    buttonThree(True)
-    buttonFour(True)
+
+    for i in range(0,4):
+        drawSensor(i, sensorstate[i])
+    drawarrow(1,arrowstate[0]); drawarrow(2,arrowstate[1])
+    buttonTwo(buttonstate[1]); buttonThree(buttonstate[2]); buttonFour(buttonstate[3])
+
+    if buttonstate[0]:
+        buttonOne(True)
+        buttonstate[0] = False
 
     lcd.blit(background, (0,0))
     pygame.display.flip()
 
-    time.sleep(1)
-
-    buttonOne(False)
-    buttonTwo(False)
-    buttonThree(False)
-    buttonFour(False)
-    lcd.blit(background, (0,0))
-    pygame.display.flip()
-    
-    time.sleep(1)
-
-
-
-exit()
-
-
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            x = pygame.mouse.get_pos()[0]
+            y = pygame.mouse.get_pos()[1]
+            if insidecircle(x,y) == 1:
+                print "inside 1"
+                if not buttonstate[2]:
+                    buttonstate[0] = not buttonstate[0]
+            elif insidecircle(x, y) == 2:
+                print "inside 2"
+            elif insidecircle(x, y) == 3:
+                print "inside 3"
+                buttonstate[2] = not buttonstate[2]
+            elif insidecircle(x, y) == 4:
+                print "inside 4"
+                buttonFour(True)
+                lcd.blit(background, (0,0))
+                pygame.display.flip()
+                time.sleep(.05)
+            elif insidecircle(x,y) == False:
+                print "missed"
