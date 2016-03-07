@@ -8,23 +8,27 @@ y_size = 320
 radius = 50
 space = 18
 
-colorGreen = (169, 204, 80)
-colorRed = (224,31,73)
+colorGreen = (47, 232, 11)
 colorBlack = (0,0,0)
 colorBackground = (180,180,180)
-colorYellow = (245,245,73)
+colorYellow = (255,220,42)
 colorWhite = (250,250,250)
 
 #circles one and four locations are switched
 circley = y_size - (radius + 10)
 circleFourx = 1*radius + space-3
-
 circleTwox = 3*radius + 2*space-3
-
 circleThreex = 5*radius + 3*space-3
-
 circleOnex = 7*radius + 4*space-3
 
+servox = [251,251,175,175]
+servoy = [40,167,40,167]
+
+launchwheelx = 410
+launchwheely = [105+31,105-31]
+
+arrowcenterx = [155,335]
+arrowcentery = 95
 
 lcd = pygame.display.set_mode((480, 320))
 background = pygame.Surface(lcd.get_size())
@@ -144,15 +148,25 @@ def drawarrow(location, state):
 
 def insidecircle(x,y):
     radiussquared = radius**2
+    servoradiussquared = 10**2
+    launchradiussquared = 30 **2
     insidecircleone = (x-circleOnex)**2 + (y-circley)**2
     insidecircletwo = (x-circleTwox)**2 + (y-circley)**2
     insidecirclethree = (x-circleThreex)**2 + (y-circley)**2
     insidecirclefour = (x-circleFourx)**2 + (y-circley)**2
 
+    insideservo1 = (x-servox[0])**2 + (y-servoy[0])**2
+    insideservo2 = (x-servox[1])**2 + (y-servoy[1])**2
+    insideservo3 = (x-servox[2])**2 + (y-servoy[2])**2
+    insideservo4 = (x-servox[3])**2 + (y-servoy[3])**2
+
+    insidelaunch1 = (x-launchwheelx)**2 + (y-launchwheely[0])**2
+    insidelaunch2 = (x-launchwheelx)**2 + (y-launchwheely[1])**2
+
+    insidearrow1 = (x-arrowcenterx[0])**2 + (y-arrowcentery)**2
+    insidearrow2 = (x-arrowcenterx[1])**2 + (y-arrowcentery)**2
 
     if insidecircleone <= radiussquared:
-        print x
-        print y
         return 1
     elif insidecircletwo <= radiussquared:
         return 2
@@ -160,6 +174,22 @@ def insidecircle(x,y):
         return 3
     elif insidecirclefour <= radiussquared:
         return 4
+    elif insideservo1 <= servoradiussquared:
+        return 's1'
+    elif insideservo2 <= servoradiussquared:
+        return 's2'
+    elif insideservo3 <= servoradiussquared:
+        return 's3'
+    elif insideservo4 <= servoradiussquared:
+        return 's4'
+    elif insidelaunch1 <= launchradiussquared:
+        return 'l1'
+    elif insidelaunch2 <= launchradiussquared:
+        return 'l2'
+    elif insidearrow1 <= launchradiussquared:
+        return 'a1'
+    elif insidearrow2 <= launchradiussquared:
+        return 'a2'
     else:
         return False
 
@@ -167,19 +197,19 @@ def insidecircle(x,y):
 def drawlaunchwheel(state):
     if state:
         #toplaunchwheel
-        pygame.gfxdraw.filled_circle(background,410,105-31,30,colorGreen)
-        pygame.gfxdraw.aacircle(background,410,105-31,30,colorGreen)
+        pygame.gfxdraw.filled_circle(background,launchwheelx,launchwheely[1],30,colorGreen)
+        pygame.gfxdraw.aacircle(background,launchwheelx,launchwheely[1],30,colorGreen)
         #bottomlaunchwheel
-        pygame.gfxdraw.filled_circle(background,410,105+31,30,colorGreen)
-        pygame.gfxdraw.aacircle(background,410,105+31,30,colorGreen)
+        pygame.gfxdraw.filled_circle(background,launchwheelx,launchwheely[0],30,colorGreen)
+        pygame.gfxdraw.aacircle(background,launchwheelx,launchwheely[0],30,colorGreen)
 
     elif not state:
         #toplaunchwheel
-        pygame.gfxdraw.filled_circle(background,410,105-31,30,colorWhite)
-        pygame.gfxdraw.aacircle(background,410,105-31,30,colorWhite)
+        pygame.gfxdraw.filled_circle(background,launchwheelx,launchwheely[1],30,colorWhite)
+        pygame.gfxdraw.aacircle(background,launchwheelx,launchwheely[1],30,colorWhite)
         #bottomlaunchwheel
-        pygame.gfxdraw.filled_circle(background,410,105+31,30,colorWhite)
-        pygame.gfxdraw.aacircle(background,410,105+31,30,colorWhite)
+        pygame.gfxdraw.filled_circle(background,launchwheelx,launchwheely[0],30,colorWhite)
+        pygame.gfxdraw.aacircle(background,launchwheelx,launchwheely[0],30,colorWhite)
 
 def drawLaunchUI():
 
@@ -196,3 +226,15 @@ def drawLaunchUI():
     channel = pygame.Surface((140,40))
     channel.fill((127,127,127))
     background.blit(channel, (270,85))
+
+def drawServo(pos,state):
+    if state:
+        color = colorGreen
+        textcolor = (5, 5, 5)
+    if not state:
+        color = colorWhite
+        textcolor = colorBackground
+
+    f = pygame.font.SysFont("freesans", 18)
+    pygame.gfxdraw.filled_circle(background,servox[pos],servoy[pos],10,color)
+    pygame.gfxdraw.aacircle(background,servox[pos],servoy[pos],10,color)
