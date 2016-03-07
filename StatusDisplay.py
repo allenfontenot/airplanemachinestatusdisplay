@@ -41,6 +41,8 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             x = pygame.mouse.get_pos()[0]
             y = pygame.mouse.get_pos()[1]
+            print x
+            print y
             if insidecircle(x,y) == 1:
                 print "inside 1"
                 if not buttonstate[2]:
